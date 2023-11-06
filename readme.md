@@ -19,7 +19,7 @@ You also need to install the SDCC compiler.
 
 Connect the EDice to the prommer (WITHOUT A BATTERY!) and run:
 
-`make clean build run`
+`make clean program run`
 
 With the `run` command, the prommer will power the EDice and it should work right away.
 
