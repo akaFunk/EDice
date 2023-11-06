@@ -1,0 +1,4 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "EDice")(type "KiCad")(uri "${KIPRJMOD}/EDice.pretty")(options "")(descr ""))
+)
