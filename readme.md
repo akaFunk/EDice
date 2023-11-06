@@ -60,7 +60,7 @@ The PCB and the images are licensed under CC-BY 4.0, the source code is under GP
 
 For the PCB we used the KiCad symbols made by the free-pdk project: https://github.com/free-pdk/pdk-kicad-symbols/tree/master. This library is licensed under the CC-BY 4.0.
 
-For the software the pdk-includes (GPL v2) https://github.com/free-pdk/pdk-includes and the easy-pdf-includes (GPL v2)  https://github.com/free-pdk/easy-pdk-includes are used.
+For the software the pdk-includes (GPL v2) https://github.com/free-pdk/pdk-includes and the easy-pdk-includes (GPL v2)  https://github.com/free-pdk/easy-pdk-includes are used.
 
 ## Images
 ![EDice](EDice.jpg)
