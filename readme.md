@@ -28,9 +28,10 @@ Hold the button for a few seconds to roll the dice. A short press or waiting for
 
 ## TODO
 - Create a small adapter PCB for the prommer to fit into the EDice. A piece of breadboard and some pin headers will also do the trick.
+- Switch the LED structure so that the controller pulls them down to turn them on. This increases the current handling from 1.6mA to 6mA.
 
 ## License
-The PCB is licensed unser CC-BY 4.0, the source code is under GPL v2 license.
+The PCB and the images are licensed unser CC-BY 4.0, the source code is under GPL v2 license.
 
 For the PCB we used the KiCad symbols made by the free-pdf project: https://github.com/free-pdk/pdk-kicad-symbols/tree/master. This library is also licensed under the CC-BY 4.0.
 
