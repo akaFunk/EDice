@@ -5,7 +5,7 @@ The EDice is used as a simple soldering exercise. Therefore it has a combination
 
 It is powered by a single CR2032 3V coin cell, which is on the back of the PCB. The holder we use is the BS-02-A1AJ010, which can also be purchased from LCSC for less than 5 Euro-Cents a pop.
 
-Together with the PCB and a few other components, the whole cost is well below 1€ in quantaties of about 50. This makes it ideal for a give-away item.
+Together with the PCB and a few other components, the whole cost is approximately 1€ in quantaties of about 100. This includes everything except the prommer (PCB, components, 3D case, shipping), which makes it ideal for a give-away item.
 
 ## Building
 Building is pretty straight forward. A few things to note:
