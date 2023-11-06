@@ -30,9 +30,11 @@ Hold the button for a few seconds to roll the dice. A short press or waiting for
 - Create a small adapter PCB for the prommer to fit into the EDice. A piece of breadboard and some pin headers will also do the trick.
 
 ## License
-The PCB is licensed unser CC-BY 4.0, the source code is under MIT license.
+The PCB is licensed unser CC-BY 4.0, the source code is under GPL v2 license.
 
 For the PCB we used the KiCad symbols made by the free-pdf project: https://github.com/free-pdk/pdk-kicad-symbols/tree/master. This library is also licensed under the CC-BY 4.0.
+
+For the software the pdk-includes (GPL v2) https://github.com/free-pdk/pdk-includes and the easy-pdf-includes (GPL v2)  https://github.com/free-pdk/easy-pdk-includes are used.
 
 ## Images
 ![EDice](EDice.jpg)
