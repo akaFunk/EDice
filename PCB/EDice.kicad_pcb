@@ -1538,6 +1538,12 @@
   (gr_text "PA0" (at 120.5 103.9 45) (layer "B.SilkS") (tstamp f154e78f-2031-41f5-b5d8-3f8a2f52d2dc)
     (effects (font (size 1 1) (thickness 0.15)) (justify left bottom mirror))
   )
+  (gr_text "akaFunk EDice" (at 111.5 86.6) (layer "F.SilkS") (tstamp 291a7c1f-04dc-45e5-aa5e-7c6348cb6091)
+    (effects (font (size 1 1) (thickness 0.125)) (justify left bottom))
+  )
+  (gr_text "rev 2" (at 115.5 87.9) (layer "F.SilkS") (tstamp 99899347-6250-448f-a47f-38c82aff69b8)
+    (effects (font (size 1 1) (thickness 0.125)) (justify left bottom))
+  )
 
   (segment (start 101.7 95) (end 102.365 94.335) (width 0.4) (layer "F.Cu") (net 1) (tstamp 10d845fe-acce-4115-95e3-b6984da46f39))
   (segment (start 102.365 94.335) (end 102.365 92.525) (width 0.4) (layer "F.Cu") (net 1) (tstamp 13c5e886-addf-4baa-8295-046ac257d4d7))
