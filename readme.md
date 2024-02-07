@@ -54,7 +54,7 @@ This does not include the cost for the prommer, which are an additional ~25€.
 
 ## TODO
 - Create a small adapter PCB for the prommer to fit into the EDice. A piece of breadboard and some pin headers will also do the trick.
-- Switch the LED structure so that the controller pulls them down to turn them on. This increases the current handling from 1.6mA to 6mA.
+- Update the 3D model and make new rendering
 
 ## License
 The PCB and the images are licensed under CC-BY 4.0, the source code is under GPL v2.
