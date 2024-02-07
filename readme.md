@@ -17,9 +17,9 @@ We used LCSC for component sourcing. Here is our list:
 
 - 100x microcontroller, PFS154-S16, C317613
 - 100x battery holder, BS-02-A1AJ010, C5239862
-- 100x button, K2-1102DP-J4SW-04, C136680
+- 100x button, K2-1102SP-J4SC-04, C879450
 - 20x pin header,  12251140CNG0S115001,  C429959
-- 700x 1k resistor, CR1/4W-1K±5%-ST26, C2894606
+- 700x 2.2k resistor, MFR0W8F2201A50, C58682
 - 100x 100nF ceramic capacitor, CC1H104ZC1FD3F5O1100, C2832508
 - 700x red LED 5mm,  XL-502SURD, C2895492
 
