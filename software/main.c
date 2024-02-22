@@ -6,45 +6,68 @@
 #include <stdlib.h>
 
 
+/****************************************************
+ *                                                  *
+ *  board-specific and software-specific settings   *
+ *                                                  *
+ ****************************************************/
+
+#define DEBUG                       0
+
+#define SHORT_BUTTON_PRESS_MS       250
+#define SLOWING_CYCLE_ITERATIONS    40
+#define BLINKING_ITERATIONS         6
+#define HOLD_VALUE_DURATION_MS      10000
+
 #define BOARD_REV 2
+
+#if BOARD_REV == 1
+    #define LED_PIN_D1  6
+    #define LED_PIN_D2  5
+    #define LED_PIN_D3  0
+    #define LED_PIN_D4  3
+    #define LED_PIN_D5  1
+    #define LED_PIN_D6  7
+    #define LED_PIN_D7  2
+    #define BTN_PIN     4
+
+#elif BOARD_REV == 2
+    #define LED_PIN_D1  7
+    #define LED_PIN_D2  6
+    #define LED_PIN_D3  1
+    #define LED_PIN_D4  3
+    #define LED_PIN_D5  0
+    #define LED_PIN_D6  5
+    #define LED_PIN_D7  2
+    #define BTN_PIN     4
+#endif
+
+/****************************************************/
 
 
 #define BTN_CTRL  PBC
 #define BTN_PULL  PBPH
 #define BTN_DATA  PB
-#define BTN_PIN   4
 
 #define LED_CTRL PBC
 #define LED_DATA PB
 #define LED_MASK 0xef;
 
-#if BOARD_REV == 1
-    #define LED_PIN_D1 6
-    #define LED_PIN_D2 1
-    #define LED_PIN_D3 7
-    #define LED_PIN_D4 3
-    #define LED_PIN_D5 5
-    #define LED_PIN_D6 0
-    #define LED_PIN_D7 2
-
-#elif BOARD_REV == 2
-    #define LED_PIN_D1 7
-    #define LED_PIN_D2 6
-    #define LED_PIN_D3 1
-    #define LED_PIN_D4 3
-    #define LED_PIN_D5 0
-    #define LED_PIN_D6 5
-    #define LED_PIN_D7 2
-#endif
-
 #define LED_VALUE(pin) (1<<pin)
 #define BUTTON_RELEASED (BTN_DATA & (1<<BTN_PIN))
 #define BUTTON_PRESSED (!BUTTON_RELEASED)
 
-#define S_SLEEP         0
-#define S_QUICK_CYCLE   1
-#define S_SLOWING_CYCLE 2
-#define S_HOLD_VALUE    3
+
+uint8_t xorshift8(void);
+void main(void);
+void initializeHardware(void);
+void sleep();
+uint16_t quickCycle();
+uint16_t slowingCycle();
+uint16_t blink();
+uint16_t holdValue();
+void debug();
+unsigned char __sdcc_external_startup(void);
 
 
 uint8_t led_values[] = {
@@ -73,106 +96,179 @@ uint8_t xorshift8() {
     return x8;
 }
 
-// Main program
+
 void main() {
 
-    // Initialize hardware
+    initializeHardware();
+        
+    #if DEBUG != 0
+
+        while(1)
+        {
+            debug();
+        }
+
+    #else
+
+        while(1)
+        {
+            sleep();
+
+            // Sleep, if short button press
+            if (quickCycle() <= SHORT_BUTTON_PRESS_MS) {
+                continue;
+            }
+
+            if (slowingCycle()) {
+                continue;
+            }
+
+            if (blink()) {
+                continue;
+            }
+
+            if (holdValue()) {
+                continue;
+            }
+        }
+
+    #endif
+}
+
+
+void initializeHardware() {
+
     LED_CTRL |= 0xef;
     BTN_CTRL &= ~(1<<BTN_PIN);
     BTN_PULL |= (1<<BTN_PIN);
 
     PAPH = 0xff;
     PBPH = 0xff;
+}
+
+
+void sleep() {
+    
+    while (BUTTON_RELEASED) {
+        LED_DATA = 0;
+        __stopsys();
+    }
+}
+
+
+uint16_t quickCycle() {
 
     uint16_t counter = 0;
 
-    loop:
-    while(1)
-    {
-        // Sleep
-        while (BUTTON_RELEASED) {
-            LED_DATA = 0;
-            __stopsys();
-        }
+    while (BUTTON_PRESSED) {
+        LED_DATA = led_values[xorshift8() % 6];
+        counter++;
+        _delay_ms(1);
+    }
+
+    return counter;
+}
 
 
-        // Quick Cycle
-        counter = 0;
+uint16_t slowingCycle() {
 
-        while (BUTTON_PRESSED) {
-            LED_DATA = led_values[xorshift8() % 6];
-            counter++;
-        }
+    uint16_t counter = 0;
 
+    while (counter < SLOWING_CYCLE_ITERATIONS) {
 
-        // Sleep, if short button press
-        if (counter <= 500) {
-            continue;
-        }
+        counter++;
+        LED_DATA = led_values[xorshift8() % 6];
 
-
-        //Slower Cycle
-        counter = 0;
-        while (counter < 40) {
-            counter++;
-            LED_DATA = led_values[xorshift8() % 6];
-
-            for (uint16_t i = 0; i < counter * counter / 10; i++) {
-                _delay_ms(2);
-
-                // Reset to Quick Cycle, if button is pressed
-                if (BUTTON_PRESSED) {
-                    goto loop;
-                }   
-            }
-        }
-
-
-        /*
-        // Hold Value
-        counter = 0;
-        while (counter < 1000) {
-            counter++;
-            _delay_ms(1);
+        for (uint16_t i = 0; i < counter * counter / 10; i++) {
+            _delay_ms(2);
 
             // Reset to Quick Cycle, if button is pressed
             if (BUTTON_PRESSED) {
-                goto loop;
+                return 1;
             }   
         }
-        */
+    }
+
+    return 0;
+}
 
 
-        // Blink a few times
-        counter = 0;
-        while (counter < 2 * 6) {
+uint16_t blink() {
+
+    uint16_t counter = 0;
+
+    while (counter < 2 * BLINKING_ITERATIONS) {
+        
+        LED_DATA = (counter % 2) * led_values[x8 % 6];
+        counter++;
+        
+        for (uint16_t i = 0; i < 100; i++) {
             
-            LED_DATA = (counter % 2) * led_values[x8 % 6];
-            counter++;
-            
-            for (uint16_t i = 0; i < 100; i++) {
-                
-                _delay_ms(1);
-                
-                // Reset to Quick Cycle, if button is pressed
-                if (BUTTON_PRESSED) {
-                    goto loop;
-                }
-            }
-        }
-
-
-        // Hold Value
-        counter = 0;
-        while (counter < 10000) {
-            counter++;
             _delay_ms(1);
-
+            
             // Reset to Quick Cycle, if button is pressed
             if (BUTTON_PRESSED) {
-                goto loop;
-            }   
+                return 1;
+            }
         }
+    }
+
+    return 0;
+}
+
+
+uint16_t holdValue() {
+
+    uint16_t counter = 0;
+
+    while (counter < HOLD_VALUE_DURATION_MS) {
+
+        counter++;
+        _delay_ms(1);
+
+        // Reset to Quick Cycle, if button is pressed
+        if (BUTTON_PRESSED) {
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
+
+void debug() {
+
+    // Test die numbers in ascending order
+    for (uint16_t i = 0; i < 6; i++) {
+        
+        LED_DATA = led_values[i];
+        _delay_ms(1000);
+    }
+
+
+    // Test individual LEDs in ascending order (by name)
+    LED_DATA = LED_VALUE(LED_PIN_D1);
+    _delay_ms(1000);
+    LED_DATA = LED_VALUE(LED_PIN_D2);
+    _delay_ms(1000);
+    LED_DATA = LED_VALUE(LED_PIN_D3);
+    _delay_ms(1000);
+    LED_DATA = LED_VALUE(LED_PIN_D4);
+    _delay_ms(1000);
+    LED_DATA = LED_VALUE(LED_PIN_D5);
+    _delay_ms(1000);
+    LED_DATA = LED_VALUE(LED_PIN_D6);
+    _delay_ms(1000);
+    LED_DATA = LED_VALUE(LED_PIN_D7);
+    _delay_ms(1000);
+
+
+    // Test button functionality by activating all LEDs, if button is pressed
+    uint16_t counter = 0;
+    while(counter < 10000) {
+        LED_DATA = (0xFF ^ LED_VALUE(BTN_PIN)) * BUTTON_PRESSED;
+        _delay_ms(1);
+        counter++;
     }
 }
 
