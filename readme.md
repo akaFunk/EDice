@@ -27,15 +27,28 @@ We used LCSC for component sourcing. Here is our list:
 There are probably cheaper things out there, we did not look to hard into it.
 
 ## Programming
-To program the Padauk microcontroller you need a Free-PDK prommer: https://free-pdk.github.io/
 
-You also need to install the SDCC compiler.
-
-Connect the EDice to the prommer (WITHOUT A BATTERY!) and run:
+After installing the required software listed below, connect the EDice to the prommer (WITHOUT A BATTERY!) and run:
 
 `make clean program run`
 
 With the `run` command, the prommer will power the EDice and it should work right away.
+
+### Programming in Linux
+To program the Padauk microcontroller you need a Free-PDK prommer: https://free-pdk.github.io/
+
+You also need to install the SDCC compiler (version 4.4.0 or higher) which you can install through your packet manager.
+
+### Programming in Windows
+Microsoft being Microsoft, it is a little more tricky to run make on Windows than it is on Linux. However, you san still do it - with a few extra steps. To run make and the programmer on Windows, you will need to:
+
+- Install some kind of Linux shell for Windows like [Git Bash](https://gitforwindows.org/).
+- Install some version of make for Windows. An easy way is using [Chocolatey](https://chocolatey.org/install) to install make by executing `choco install make` in an admin privileged command prompt.
+- Install the [SDCC compiler](https://sourceforge.net/projects/sdcc/files/sdcc-win64/) (version 4.4.0 or higher). Make sure to use the provided setup.exe installer so the binary executable is added to your PATH automatically.
+- Install the [Free-PDK prommer](https://github.com/free-pdk/easy-pdk-programmer-software/releases) by unpacking the .zip file, putting it somewhere with your other programs and adding the directory containing the file `easypdkprog` to your PATH manually.
+
+After completing the installation, you can now compile and upload your code to the EDice by opening Git Bash (or another Linux Shell) in the directory containing the Makefile and running the commands listed in the section above.
+
 
 ## Using
 Hold the button for a few seconds to roll the dice. A short press or waiting for ~20 seconds will put it in power-down mode, consuming less than 0.1µA. The battery should last for years.
