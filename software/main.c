@@ -57,6 +57,9 @@
 #define BUTTON_RELEASED (BTN_DATA & (1<<BTN_PIN))
 #define BUTTON_PRESSED (!BUTTON_RELEASED)
 
+#define UINT8_TO_DIE_VALUE(val) (val % 6)
+// #define UINT8_TO_DIE_VALUE(val) (3U * val / 128U)
+
 
 uint8_t xorshift8(void);
 void main(void);
@@ -81,13 +84,12 @@ uint8_t led_values[] = {
 
 
 uint8_t x8 = 1;
-uint8_t last_x8 = 1;
 
 uint8_t xorshift8() {
     
-    last_x8 = x8 % 6;
+    uint8_t last_x8 = UINT8_TO_DIE_VALUE(x8);
 
-    while (x8 % 6 == last_x8) {
+    while (UINT8_TO_DIE_VALUE(x8) == last_x8) {
         x8 ^= x8 << 5;
         x8 ^= x8 >> 3;
         x8 ^= x8 << 6;
@@ -161,7 +163,7 @@ uint16_t quickCycle() {
     uint16_t counter = 0;
 
     while (BUTTON_PRESSED) {
-        LED_DATA = led_values[xorshift8() % 6];
+        LED_DATA = led_values[UINT8_TO_DIE_VALUE(xorshift8())];
         counter++;
         _delay_ms(1);
     }
@@ -177,7 +179,7 @@ uint16_t slowingCycle() {
     while (counter < SLOWING_CYCLE_ITERATIONS) {
 
         counter++;
-        LED_DATA = led_values[xorshift8() % 6];
+        LED_DATA = led_values[UINT8_TO_DIE_VALUE(xorshift8())];
 
         for (uint16_t i = 0; i < counter * counter / 10; i++) {
             _delay_ms(2);
@@ -199,7 +201,7 @@ uint16_t blink() {
 
     while (counter < 2 * BLINKING_ITERATIONS) {
         
-        LED_DATA = (counter % 2) * led_values[x8 % 6];
+        LED_DATA = (counter % 2) * led_values[UINT8_TO_DIE_VALUE(x8)];
         counter++;
         
         for (uint16_t i = 0; i < 100; i++) {
