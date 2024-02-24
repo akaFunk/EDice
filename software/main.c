@@ -174,14 +174,11 @@ uint16_t quickCycle() {
 
 uint16_t slowingCycle() {
 
-    uint16_t counter = 0;
+    for (uint16_t i = 1; i <= SLOWING_CYCLE_ITERATIONS; i++) {
 
-    while (counter < SLOWING_CYCLE_ITERATIONS) {
-
-        counter++;
         LED_DATA = led_values[UINT8_TO_DIE_VALUE(xorshift8())];
 
-        for (uint16_t i = 0; i < counter * counter / 10; i++) {
+        for (uint16_t j = 0; j < i * i / 10; j++) {
             _delay_ms(2);
 
             // Reset to Quick Cycle, if button is pressed
@@ -197,14 +194,11 @@ uint16_t slowingCycle() {
 
 uint16_t blink() {
 
-    uint16_t counter = 0;
-
-    while (counter < 2 * BLINKING_ITERATIONS) {
+    for (uint16_t i = 0; i < 2 * BLINKING_ITERATIONS; i++) {
         
-        LED_DATA = (counter % 2) * led_values[UINT8_TO_DIE_VALUE(x8)];
-        counter++;
+        LED_DATA = (i % 2) * led_values[UINT8_TO_DIE_VALUE(x8)];
         
-        for (uint16_t i = 0; i < 100; i++) {
+        for (uint16_t j = 0; j < 100; j++) {
             
             _delay_ms(1);
             
@@ -221,11 +215,9 @@ uint16_t blink() {
 
 uint16_t holdValue() {
 
-    uint16_t counter = 0;
+    for (uint16_t i = 0; i < HOLD_VALUE_DURATION_MS; i++) {
 
-    while (counter < HOLD_VALUE_DURATION_MS) {
-
-        counter++;
+        LED_DATA = led_values[UINT8_TO_DIE_VALUE(x8)];
         _delay_ms(1);
 
         // Reset to Quick Cycle, if button is pressed
