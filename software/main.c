@@ -14,7 +14,7 @@
 
 #define DEBUG                       0
 
-#define SHORT_BUTTON_PRESS_MS       250
+#define SHORT_BUTTON_PRESS_MS       100
 #define SLOWING_CYCLE_ITERATIONS    40
 #define BLINKING_ITERATIONS         6
 #define HOLD_VALUE_DURATION_MS      10000
