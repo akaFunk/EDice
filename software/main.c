@@ -15,6 +15,7 @@
 #define DEBUG                       0
 
 #define SHORT_BUTTON_PRESS_MS       100
+#define EXTENSIVE_BUTTON_PRESS_MS   10000
 #define SLOWING_CYCLE_ITERATIONS    27
 #define BLINKING_ITERATIONS         6
 #define HOLD_VALUE_DURATION_MS      10000
@@ -114,9 +115,11 @@ void main() {
 
         while(1)
         {
-            sleep();
+            while (BUTTON_RELEASED) {
+                sleep();
+            }
 
-            // Sleep, if short button press
+            // Sleep, if short  or extensively long button press
             if (quickCycle() <= SHORT_BUTTON_PRESS_MS) {
                 continue;
             }
@@ -150,11 +153,9 @@ void initializeHardware() {
 
 
 void sleep() {
-    
-    while (BUTTON_RELEASED) {
-        LED_DATA = 0;
-        __stopsys();
-    }
+
+    LED_DATA = 0;
+    __stopsys();
 }
 
 
@@ -166,6 +167,12 @@ uint16_t quickCycle() {
         LED_DATA = led_values[UINT8_TO_DIE_VALUE(xorshift8())];
         counter++;
         _delay_ms(1);
+
+        // return to sleep, if button is pressed extensively long (i.e. accidentally in a bag)
+        if (counter > EXTENSIVE_BUTTON_PRESS_MS) {
+            sleep();
+            return 0;
+        }
     }
 
     return counter;
