@@ -14,7 +14,8 @@
 
 #define DEBUG                       0
 
-#define SHORT_BUTTON_PRESS_MS       100
+#define SHORT_BUTTON_PRESS_MS       200
+#define QUICK_CYCLE_DELAY_MS        25
 #define EXTENSIVE_BUTTON_PRESS_MS   10000
 #define SLOWING_CYCLE_ITERATIONS    27
 #define BLINKING_ITERATIONS         6
@@ -165,8 +166,8 @@ uint16_t quickCycle() {
 
     while (BUTTON_PRESSED) {
         LED_DATA = led_values[UINT8_TO_DIE_VALUE(xorshift8())];
-        counter++;
-        _delay_ms(1);
+        counter += QUICK_CYCLE_DELAY_MS;
+        _delay_ms(QUICK_CYCLE_DELAY_MS);
 
         // return to sleep, if button is pressed extensively long (i.e. accidentally in a bag)
         if (counter > EXTENSIVE_BUTTON_PRESS_MS) {
