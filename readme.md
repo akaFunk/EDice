@@ -20,7 +20,7 @@ We used LCSC for component sourcing. Here is our list:
 - 100x button, K2-1102SP-J4SC-04, C879450
 - 20x pin header,  12251140CNG0S115001,  C429959
 - 700x 2.2k resistor, MFR0W8F2201A50, C58682
-- 100x 100nF ceramic capacitor, CC1H104ZC1FD3F5O1100, C2832508
+- 100x 100nF ceramic capacitor, CT4-0805Y104M500F1, C154503
 - 700x red LED 5mm, XL-502SURD, C2895492
 - 400x Screw M3x12, PM3X12, C357546
 
